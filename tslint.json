@@ -85,7 +85,7 @@
     "prefer-const": true,
     "quotemark": [
       true,
-      "single"
+      "double"
     ],
     "radix": true,
     "semicolon": [
@@ -125,6 +125,8 @@
     "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
-    "directive-class-suffix": true
-  }
+    "directive-class-suffix": true,
+    "prettier": true
+  },
+  "extends": ["tslint-config-prettier", "tslint-config-prettier"]
 }
