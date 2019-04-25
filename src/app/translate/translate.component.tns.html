@@ -1,0 +1,12 @@
+<StackLayout>
+  <Label text="Translate" class="h2 text-center heading" textWrap="true"></Label>
+  <TextView [(ngModel)]="inputVal" name="inputVal" hint="What would you like to translate?" editable="true" returnKeyType="done" class="input input-border" (ngModelChange)="onValChange($event)" (focus)="onFocus($event)"></TextView>
+  <StackLayout orientation="horizontal">
+    <Button
+        *ngFor="let cfg of translateConfig"
+        [text]="cfg.fromLan + ' > ' + cfg.toLan"
+        class="btn btn-primary"
+        (tap)="onTap($event, cfg)"></Button>
+  </StackLayout>
+  <HtmlView class="output" [html]="outputVal"></HtmlView>
+</StackLayout>

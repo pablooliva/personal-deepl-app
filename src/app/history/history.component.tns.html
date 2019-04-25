@@ -1,0 +1,11 @@
+<StackLayout>
+  <Label text="History" class="h2 text-center heading" textWrap="true"></Label>
+  <ListView [items]="storage">
+    <ng-template let-trans="item" let-idx="index">
+      <StackLayout orientation="horizontal">
+        <Label class="items" [text]="trans.translationQuery" (tap)="onItemTap(trans)"></Label>
+        <Button [text]="delete" (tap)="remove(idx)"></Button>
+      </StackLayout>
+    </ng-template>
+  </ListView>
+</StackLayout>

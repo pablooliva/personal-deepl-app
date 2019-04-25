@@ -1,15 +1,30 @@
 import { Routes } from "@angular/router";
 
-import { HomeComponent } from "./home/home.component";
+import { NavTabsComponent } from "~/app/nav-tabs/nav-tabs.component";
+import { TranslateComponent } from "~/app/translate/translate.component";
+import { HistoryComponent } from "~/app/history/history.component";
 
 export const routes: Routes = [
   {
     path: "",
-    redirectTo: "/home",
+    redirectTo: "/tabs",
     pathMatch: "full"
   },
   {
-    path: "home",
-    component: HomeComponent
+    path: "tabs",
+    component: NavTabsComponent,
+    children: [
+      {
+        path: "",
+        redirectTo: "/translate",
+        pathMatch: "full"
+      },
+      { path: "translate", component: TranslateComponent, outlet: "translate" },
+      {
+        path: "history",
+        component: HistoryComponent,
+        outlet: "history"
+      }
+    ]
   }
 ];

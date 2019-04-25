@@ -1,0 +1,17 @@
+<ActionBar [title]="'title'">
+  <Image src="res://deepl_logo" stretch="none"></Image>
+</ActionBar>
+<TabView androidTabsPosition="bottom"
+  #tabView
+  id="tabView"
+  androidSelectedTabHighlightColor="#006400"
+  selectedTabTextColor="#006400"
+  [(ngModel)]="selectedIndex"
+  (selectedIndexChanged)="tabViewIndexChange(tabView.selectedIndex)">
+  <StackLayout *tabItem="{ title: 'Translate', iconSource: 'res://translate' }">
+    <page-router-outlet name="translate"></page-router-outlet>
+  </StackLayout>
+  <StackLayout *tabItem="{ title: 'History', iconSource: 'res://history' }">
+    <page-router-outlet name="history"></page-router-outlet>
+  </StackLayout>
+</TabView>

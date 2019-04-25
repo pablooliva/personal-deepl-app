@@ -126,7 +126,27 @@
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true,
-    "prettier": true
+    "prettier": true,
+    "directive-selector": [
+      true,
+      "attribute",
+      "dl",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "dl",
+      "kebab-case"
+    ],
+    "pipe-naming": [
+      true,
+      "camelCase",
+      "dl"
+    ]
   },
-  "extends": ["tslint-config-prettier", "tslint-config-prettier"]
+  "extends": [
+    "tslint-config-prettier",
+    "tslint-config-prettier"
+  ]
 }
