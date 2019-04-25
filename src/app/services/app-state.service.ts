@@ -35,7 +35,7 @@ export class AppStateService implements OnDestroy {
   constructor(private _storageService: StorageService) {
     this._parsedTransHistory = this._storageService.deviceHasKey(this._transStorageKey)
       ? JSON.parse(this._storageService.deviceGetString(this._transStorageKey))
-      : null;
+      : [];
 
     this.transHistoryState.next(this._parsedTransHistory);
   }

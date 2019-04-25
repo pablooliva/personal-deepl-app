@@ -8,7 +8,7 @@
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.deepl" 
+    applicationId = "de.pablooliva.deepl"
     
     //override supported platforms
     // ndk {
