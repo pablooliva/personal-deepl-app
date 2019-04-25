@@ -1,7 +1,7 @@
 {
   "name": "deepl",
   "nativescript": {
-    "id": "org.nativescript.deepl",
+    "id": "de.pablooliva.deepl",
     "tns-android": {
       "version": "5.3.1"
     }
