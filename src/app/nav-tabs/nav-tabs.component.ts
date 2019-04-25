@@ -6,7 +6,7 @@ import { Page } from "tns-core-modules/ui/page";
 import { takeUntil } from "rxjs/operators";
 import { Subject } from "rxjs";
 
-import { TabViewChildStateService } from "~/app/services/tab-view-child-state.service";
+import { AppStateService } from "~/app/services/app-state.service";
 
 @Component({
   selector: "dl-nav-tabs",
@@ -23,7 +23,7 @@ export class NavTabsComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: RouterExtensions,
     private _route: ActivatedRoute,
     private _page: Page,
-    private _tvChildState: TabViewChildStateService
+    private _appState: AppStateService
   ) {}
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class NavTabsComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     );
 
-    this._tvChildState.tabViewIndexState.pipe(takeUntil(this._destroyed)).subscribe(state => {
+    this._appState.tabViewIndexState.pipe(takeUntil(this._destroyed)).subscribe(state => {
       this.tabViewIndexChange(state.tabViewIndex);
     });
   }

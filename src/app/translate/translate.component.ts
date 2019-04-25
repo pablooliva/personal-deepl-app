@@ -5,21 +5,7 @@ import { Subject } from "rxjs";
 import { takeUntil } from "rxjs/operators";
 
 import { HttpService, TranslationSource } from "~/app/services/http.service";
-import { StorageService } from "~/app/services/storage.service";
-import { TabViewChildStateService } from "~/app/services/tab-view-child-state.service";
-
-export interface TranslationHistoryItems {
-  date: Date;
-  translationQuery: string;
-  fromTo: TranslateConfig;
-}
-
-export const transStorageKey = "translation-history";
-
-export interface TranslateConfig {
-  fromLan: string;
-  toLan: string;
-}
+import { AppStateService, TranslateConfig } from "~/app/services/app-state.service";
 
 @Component({
   selector: "dl-translate",
@@ -37,18 +23,11 @@ export class TranslateComponent implements OnInit, OnDestroy {
   constructor(
     private _page: Page,
     private _http: HttpService,
-    private _storage: StorageService,
-    private _tvChildState: TabViewChildStateService
+    private _appStateService: AppStateService
   ) {}
 
   ngOnInit() {
     this._page.actionBarHidden = true;
-
-    if (!this._storage.hasKey(transStorageKey)) {
-      const storeInit: TranslationHistoryItems[] = [];
-      this._storage.storeString(transStorageKey, JSON.stringify(storeInit));
-    }
-
     this.translateConfig = [
       { fromLan: "german", toLan: "english" },
       { fromLan: "english", toLan: "german" }
@@ -57,43 +36,42 @@ export class TranslateComponent implements OnInit, OnDestroy {
     this.inputVal = "";
     this.outputVal = "";
 
-    this._tvChildState.tabViewIndexState.pipe(takeUntil(this._destroyed)).subscribe(state => {
-      this.inputVal = state.query;
-      this._translate(state.fromTo);
+    this._appStateService.tabViewIndexState.pipe(takeUntil(this._destroyed)).subscribe(state => {
+      this.inputVal = state.item.translationQuery;
+      this._translate(state.item.fromTo);
     });
   }
 
   onTap(e: EventData, cfg: TranslateConfig) {
-    this._translate(cfg, true);
+    const isNewEntry = true;
+    this.inputVal = this.inputVal.trim();
+    this._translate(cfg, isNewEntry);
     this.textViewElem.dismissSoftInput();
   }
 
-  private _translate(cfg: TranslateConfig, tapped: boolean = false): void {
+  private _translate(cfg: TranslateConfig, newEntry: boolean = false): void {
     this._http.translate(cfg.fromLan as TranslationSource, this.inputVal).subscribe(
       result => {
         this.outputVal = result.toString();
 
-        if (tapped) {
-          const storage: TranslationHistoryItems[] = JSON.parse(
-            this._storage.getString(transStorageKey)
-          );
-
-          const now = new Date();
-          storage.push({
-            date: now,
-            translationQuery: this.inputVal,
-            fromTo: {
-              fromLan: cfg.fromLan,
-              toLan: cfg.toLan
-            }
-          });
-
-          this._storage.remove(transStorageKey);
-          this._storage.storeString(transStorageKey, JSON.stringify(storage));
+        if (newEntry) {
+          this._pushToTransHistory(cfg);
         }
       },
       error => console.error("error", error)
     );
+  }
+
+  private _pushToTransHistory(cfg: TranslateConfig): void {
+    const now = new Date();
+    this._appStateService.addToTransHistory({
+      date: now,
+      translationQuery: this.inputVal,
+      fromTo: {
+        fromLan: cfg.fromLan,
+        toLan: cfg.toLan
+      }
+    });
   }
 
   onValChange(e: EventData): void {
@@ -104,6 +82,7 @@ export class TranslateComponent implements OnInit, OnDestroy {
 
   onFocus(e: EventData): void {
     this.textViewElem = <TextView>e.object;
+    this.textViewElem.editable = true;
   }
 
   ngOnDestroy(): void {

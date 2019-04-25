@@ -3,19 +3,19 @@ import { setString, getString, hasKey, remove } from "tns-core-modules/applicati
 
 @Injectable({ providedIn: "root" })
 export class StorageService {
-  storeString(key: string, value: string) {
+  deviceStoreString(key: string, value: string) {
     setString(key, value);
   }
 
-  hasKey(key: string) {
+  deviceHasKey(key: string) {
     return hasKey(key);
   }
 
-  getString(key: string) {
+  deviceGetString(key: string) {
     return getString(key);
   }
 
-  remove(key: string) {
+  deviceRemove(key: string) {
     remove(key);
   }
 }
